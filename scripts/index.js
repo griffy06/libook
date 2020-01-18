@@ -1,8 +1,11 @@
 const addBtn = document.getElementById("add-btn");
 const addTxt = document.getElementById("add-txt");
+const searchBtn = document.getElementById("search-btn");
+const searchTxt = document.getElementById("search-text");
 const titles = document.getElementById("titles");
 const titleMessage = document.getElementById("title-message");
 addBtn.addEventListener('click', handleAdd);
+searchBtn.addEventListener('click',handleSearch);
 let i = localStorage.length;
 updateList();
 
@@ -16,8 +19,28 @@ function handleAdd(e){
     console.log(localStorage);
 }
 
-function updateList(){
+function handleSearch(e){
+    e.preventDefault();
+    var str = searchTxt.value;
+    var arr = new Array();
+    for(let j = 0; j < localStorage.length; j++){
+      var str2=localStorage.getItem(j);
+      var re = new RegExp(str,"gi");
+      if(re.test(str2)){
+        arr.push(str2);
+      }
+    }
+    var child = titles.lastElementChild;
+        while (child) {
+            titles.removeChild(child);
+            child = titles.lastElementChild;
+        }
+    for(let k = 0; k < arr.length; k++){
+        insertCard(arr[k]);
+    }
+}
 
+function updateList(){
     if(localStorage.length > 0) titles.removeChild(titleMessage);
     for(let j = 0; j < localStorage.length; j++){
         insertCard(localStorage.getItem(j));
